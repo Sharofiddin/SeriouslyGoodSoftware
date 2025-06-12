@@ -1,4 +1,4 @@
-
+package uz.learn.chapter1.novice;
 public class Container {
 	Container [] g; // group of connected containers
 	int n;  // actual gr size
@@ -34,5 +34,19 @@ public class Container {
 	  g[i].n = n;
 		g[i].x = z;
 	 }
+ }
+
+ public static void main(String ... args) {
+   Container a = new Container();
+	 Container b = new Container();
+	 a.addWater(10);
+	 a.connectTo(b);
+	 System.out.println("after connectTo 1");
+	 System.out.println(a.x);
+	 System.out.println(a.n);
+	 a.connectTo(b);
+	 System.out.println("after connectTo 2");
+	 System.out.println(a.x);
+	 System.out.println(a.n);
  }
 }
