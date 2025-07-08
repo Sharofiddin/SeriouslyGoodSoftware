@@ -46,6 +46,7 @@ public class Container {
 	public int groupSize() {
     return groupSize;
 	}
+	// O(n)
   public void flush() {
 	  Container current = this;
 		do {
