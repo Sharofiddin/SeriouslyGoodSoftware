@@ -1,46 +1,56 @@
-package uz.learn.chapter3.speed1;
+package uz.learn.chapter3.speed2;
 
 import java.util.*;
 
-/** A water container, optimized for speed of getAmount and addWater
+/** A water container, optimized for speed of addWater and connectTo
  */
 
 public class Container {
-  
-	private Group group = new Group(this);
-
-	private static class Group {
-		double amountPerContainer;
-		Set<Container> members;
-
-		Group(Container container) {
-		  members = new HashSet<>();
-			members.add(container);
-		}
-	}
-
+ 
+	private double amount;
+	private Container next;
+  private int groupSize;	
 	public double getAmount() {
-	  return group.amountPerContainer;
+		updateGroup();
+		return amount;
 	}
 
 	public void addWater(double amount) {
-	  double amountPerContainer = amount / group.members.size();
-		group.amountPerContainer += amountPerContainer;
+		this.amount += amount;
 	}
 
   public void connectTo(Container other) {
-	  if(group == other.group)
-			return;
-	 int size1 = group.members.size();
-	 int size2 = other.group.members.size();
-   
-	 double tot1 = group.amountPerContainer * group.members.size();
-	 double tot2 = other.group.amountPerContainer * other.group.members.size();
-	 double newAmount = (tot1 + tot2) / (size1 + size2);
+		Container oldNext = this.next;
+		this.next = other.next;
+		other.next = oldNext;
+	}
 
-	 group.members.addAll(other.group.members);
-	 group.amountPerContainer = newAmount;
-	 for(Container c : other.group.members)
-		 c.group = group;
+	private void updateGroup() {
+	  Container current = this;
+		double totalAmount = 0.0;
+		int groupSize = 0;
+		do {
+      totalAmount += current.amount;
+			groupSize++;
+			current = current.next;
+  	} while(current != this);
+   	double newAmount = totalAmount / groupSize;
+   	current = this;
+   	do {
+			current.groupSize = groupSize;
+   	  current.amount = newAmount;
+   		current = current.next;
+   	} while (current != this);
+	}
+
+	public int groupSize() {
+    return groupSize;
+	}
+  public void flush() {
+	  Container current = this;
+		do {
+			current.amount = 0;
+			current = current.next;
+		}while (current != this);
 	}
 }

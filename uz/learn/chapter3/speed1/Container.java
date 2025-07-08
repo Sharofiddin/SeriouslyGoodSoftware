@@ -43,4 +43,12 @@ public class Container {
 	 for(Container c : other.group.members)
 		 c.group = group;
 	}
+
+	public int groupSize() {
+	  return group.members.size();
+	}
+
+	public void flush() {
+	  group.amountPerContainer = 0;
+	}
 }

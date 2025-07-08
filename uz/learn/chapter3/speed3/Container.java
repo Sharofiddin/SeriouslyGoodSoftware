@@ -1,46 +1,63 @@
-package uz.learn.chapter3.speed1;
+package uz.learn.chapter3.speed3;
 
 import java.util.*;
 
-/** A water container, optimized for speed of getAmount and addWater
+/** A water container, with all methods in amortized almost-constant time.
+ *
+ * Based on union-find trees with link-by-size and path compression.
+ *
  */
 
 public class Container {
   
-	private Group group = new Group(this);
+  private double amount;
+	private Container parent = this;
+	private int size = 1;
 
-	private static class Group {
-		double amountPerContainer;
-		Set<Container> members;
-
-		Group(Container container) {
-		  members = new HashSet<>();
-			members.add(container);
+		private Container findRootAndCompress() {
+		  if(parent != this)
+				parent = parent.findRootAndCompress();
+      return parent;
 		}
-	}
 
 	public double getAmount() {
-	  return group.amountPerContainer;
+	  Container root = findRootAndCompress();
+		return root.amount;
 	}
 
 	public void addWater(double amount) {
-	  double amountPerContainer = amount / group.members.size();
-		group.amountPerContainer += amountPerContainer;
+		Container root = findRootAndCompress();
+		root.amount += amount / root.size;
 	}
-
+  
   public void connectTo(Container other) {
-	  if(group == other.group)
-			return;
-	 int size1 = group.members.size();
-	 int size2 = other.group.members.size();
-   
-	 double tot1 = group.amountPerContainer * group.members.size();
-	 double tot2 = other.group.amountPerContainer * other.group.members.size();
-	 double newAmount = (tot1 + tot2) / (size1 + size2);
-
-	 group.members.addAll(other.group.members);
-	 group.amountPerContainer = newAmount;
-	 for(Container c : other.group.members)
-		 c.group = group;
+		Container root1 = this.findRootAndCompress();
+		Container root2 = other.findRootAndCompress();
+    
+		if(root1 == root2) return;
+		int size1 = root1.size;
+		int size2 = root2.size;
+    
+		double newAmount = (root1.amount * size1 + root2.amount * size2) / (size1 + size2);
+		if(root2.size >= root1.size) {
+        root1.parent = root2;
+				root2.amount = newAmount;
+				root2.size += size1;
+		} else {
+        root2.parent = root1;
+				root1.amount = newAmount;
+				root1.size += size2;
+		}
 	}
+
+  public int groupSize() {
+	  Container root = findRootAndCompress();
+		return root.size;
+	}
+
+	public void flush() {
+	  Container root = findRootAndCompress();
+		root.amount = 0d;
+	}
+
 }
