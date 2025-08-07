@@ -1,7 +1,4 @@
-
-package uz.learn.chapter4;
-
-import java.util.*;
+package uz.learn.chapter4.exercise;
 
 public class Exercise3 {
 	 public static void main(String [] args){
