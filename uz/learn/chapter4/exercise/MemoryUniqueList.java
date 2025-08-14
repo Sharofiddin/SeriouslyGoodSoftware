@@ -1,5 +1,7 @@
 package uz.learn.chapter4.exercise;
+
 import java.util.Arrays;
+
 public class MemoryUniqueList<E> {
   private Object[] underArr;
 	private int capacity = 0;
@@ -13,17 +15,20 @@ public class MemoryUniqueList<E> {
 		if(underArr == null){
       underArr = new Object[index + 1];
 		} else {
-	  for(Object c: underArr)
+	  for(Object c: underArr){
+			if (c == null && element == null)
+				return false;
 			if(c != null && ((E)c).equals(element))return false;	
+		  }
 		}
-		if(index > underArr.length){
+		if(index >= underArr.length){
       underArr = Arrays.copyOf(underArr, index+1);
 		}
 		underArr[index] = element;
 		return true;
 	}
 
-  public  <E> E get(int index) {
+  public  E get(int index) {
    if(index >=0 && index < underArr.length)
 		 return (E)underArr[index];
 	 return null;
@@ -33,13 +38,24 @@ public class MemoryUniqueList<E> {
 		System.out.println(""+ numbers.set(0,1));
 		System.out.println(""+ numbers.set(4,8));
 		System.out.println(""+ numbers.set(3,4));
+		System.out.println(""+ numbers.set(10,20));
 		System.out.println("" + numbers.get(0));
 		System.out.println("" + numbers.get(4));
 		System.out.println("" + numbers.get(3));
+		System.out.println("" + numbers.get(10));
 		System.out.println(""+ numbers.set(30,1));
+		MemoryUniqueList<Integer> list = new MemoryUniqueList<>(10);
+   list.set(0, 1);  
+   list.set(1, 2);   
+
 		System.out.println(""+ numbers.set(1,8));
 		System.out.println(""+ numbers.set(3,5));
 		System.out.println("" + numbers.get(3));
-  }
-
+  	MemoryUniqueList<Integer> list2 = new MemoryUniqueList<>(5);
+    System.out.println( list2.set(0, 1));   
+    System.out.println( list2.set(4, 2));   
+    System.out.println( list2.set(5, 3));
+		System.out.println(list.set(0, null)); 
+    System.out.println(list.set(1, null));
+	}
 }
