@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ListUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">uz.learn.chapter5</a> &gt; <span class="el_source">ListUtils.java</span></div><h1>ListUtils.java</h1><pre class="source lang-java linenums">package uz.learn.chapter5;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+<span class="pc" id="L8">public class ListUtils {</span>
+public static &lt;T&gt; List&lt;T&gt; interleaveLists(List&lt;T&gt; l1, List&lt;T&gt; l2) {
+<span class="fc bfc" id="L10" title="All 4 branches covered.">  	if(l1 == null || l2 == null)</span>
+<span class="fc" id="L11">			throw new NullPointerException(&quot;Arguments shouldn't be null&quot;);</span>
+<span class="fc bfc" id="L12" title="All 2 branches covered.">		if(l1.size() != l2.size())</span>
+<span class="fc" id="L13">			throw new IllegalArgumentException(&quot;Arguments must have the same length&quot;);</span>
+<span class="fc" id="L14">		List&lt;T&gt; result = new LinkedList&lt;&gt;();</span>
+<span class="fc bfc" id="L15" title="All 2 branches covered.">		for (int i = 0; i &lt; l1.size(); i++) {</span>
+<span class="fc" id="L16">			result.add(l1.get(i));</span>
+<span class="fc" id="L17">			result.add(l2.get(i));</span>
+		}	
+<span class="pc bnc" id="L19" title="All 2 branches missed.">	assert postInterleaveLists(l1, l2, result) : &quot;Post conditions failed for interleaveLists&quot;;</span>
+<span class="fc" id="L20">  return result;</span>
+	}
+	public static void main(String[] args) {
+<span class="nc" id="L23">	   List&lt;Integer&gt; l1 = List.of(1,3,5,7);	</span>
+<span class="nc" id="L24">	   List&lt;Integer&gt; l2 = List.of(2,4,6,8);	</span>
+<span class="nc" id="L25">		 List&lt;Integer&gt; res =  interleaveLists(l1, l2);</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">    for (Integer val : res) {</span>
+<span class="nc" id="L27">      System.out.print(val + &quot; &quot;);</span>
+    }
+		     
+<span class="nc" id="L30">	}</span>
+
+	private static  &lt;T&gt; boolean postInterleaveLists(List&lt;T&gt; l1, List&lt;T&gt; l2, List&lt;T&gt; result) {
+<span class="nc bnc" id="L33" title="All 4 branches missed.">		if(l1.size() + l2.size() != result.size() || l2.size() != l1.size())</span>
+<span class="nc" id="L34">			return false;</span>
+<span class="nc" id="L35">		Iterator&lt;T&gt; resIt = result.iterator();</span>
+<span class="nc" id="L36">		Iterator&lt;T&gt; l1It = l1.iterator();</span>
+<span class="nc" id="L37">		Iterator&lt;T&gt; l2It = l2.iterator();</span>
+<span class="nc" id="L38">		boolean odd = true;</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">		while(resIt.hasNext()){</span>
+<span class="nc bnc" id="L40" title="All 4 branches missed.">      if(odd &amp;&amp; resIt.next() != l1It.next()) return false;</span>
+<span class="nc bnc" id="L41" title="All 4 branches missed.">			if(!odd &amp;&amp; resIt.next() != l2It.next()) return false;</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">			odd = !odd;</span>
+		}
+<span class="nc" id="L44">		return true;	</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

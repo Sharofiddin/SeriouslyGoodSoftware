@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Exercise3.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">uz.learn.chapter4.exercise</a> &gt; <span class="el_source">Exercise3.java</span></div><h1>Exercise3.java</h1><pre class="source lang-java linenums">package uz.learn.chapter4.exercise;
+
+<span class="nc" id="L3">public class Exercise3 {</span>
+	 public static void main(String [] args){
+<span class="nc" id="L5">	  Container c1 = new Container();</span>
+<span class="nc" id="L6">		c1.addWater(10);</span>
+<span class="nc" id="L7">		Container c2 = new Container();</span>
+<span class="nc" id="L8">		c2.addWater(4);</span>
+<span class="nc" id="L9">		Container c3 = new Container();</span>
+<span class="nc" id="L10">		c3.addWater(4);</span>
+<span class="nc" id="L11">		Container c4 = new Container();</span>
+<span class="nc" id="L12">		c4.addWater(4);</span>
+<span class="nc" id="L13">		System.out.println(&quot;Initial&quot;);</span>
+<span class="nc" id="L14">		System.out.println(&quot;c1=&quot; + c1.getAmount() + &quot; c2=&quot;+ c2.getAmount());</span>
+<span class="nc" id="L15">		System.out.println(&quot;c3=&quot; + c3.getAmount() + &quot; c4=&quot;+ c4.getAmount());</span>
+<span class="nc" id="L16">		c1.connectTo(c2);</span>
+<span class="nc" id="L17">		c3.connectTo(c4);</span>
+<span class="nc" id="L18">		System.out.println(&quot;after c1-&gt;c2, c3-&gt;c4&quot;);</span>
+<span class="nc" id="L19">		System.out.println(&quot;c1=&quot; + c1.getAmount() + &quot; c2=&quot;+ c2.getAmount());</span>
+<span class="nc" id="L20">		System.out.println(&quot;c3=&quot; + c3.getAmount() + &quot; c4=&quot;+ c4.getAmount());</span>
+<span class="nc" id="L21">		c3.connectTo(c1);</span>
+<span class="nc" id="L22">		System.out.println(&quot;after c1-&gt;c3&quot;);</span>
+<span class="nc" id="L23">		System.out.println(&quot;c1=&quot; + c1.getAmount() + &quot; c2=&quot;+ c2.getAmount());</span>
+<span class="nc" id="L24">		System.out.println(&quot;c3=&quot; + c3.getAmount() + &quot; c4=&quot;+ c4.getAmount());</span>
+<span class="nc" id="L25">	 }</span>
+}
+
+class Container {
+<span class="nc" id="L29">  protected Container parent = this;</span>
+<span class="nc" id="L30">	public Container(){</span>
+<span class="nc" id="L31">     parent = new SpecialContainer();</span>
+<span class="nc" id="L32">	}</span>
+<span class="nc" id="L33">	public Container(boolean dummy){</span>
+<span class="nc" id="L34">	}</span>
+	protected Container findRootAndCompress() {
+<span class="nc bnc" id="L36" title="All 2 branches missed.">		  if(this.isRoot())</span>
+<span class="nc" id="L37">				return this;</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">      if(parent.isRoot())</span>
+<span class="nc" id="L39">				return parent;</span>
+<span class="nc" id="L40">			parent = parent.findRootAndCompress();</span>
+<span class="nc" id="L41">      return parent;</span>
+		}
+	protected boolean isRoot(){
+<span class="nc bnc" id="L44" title="All 2 branches missed.">		return parent.parent == parent;</span>
+	}
+  private static class SpecialContainer extends Container{
+  	public SpecialContainer(){
+<span class="nc" id="L48">       super(true);</span>
+<span class="nc" id="L49">   	}</span>
+    double amount;
+<span class="nc" id="L51">  	int size = 1;</span>
+  }
+	public double getAmount() {
+<span class="nc" id="L54">		System.out.println(&quot;isRoot = &quot; + isRoot() + &quot;, is parent instanceof SpecialContainer &quot; + (parent instanceof SpecialContainer));</span>
+<span class="nc" id="L55">	  Container root = findRootAndCompress();</span>
+<span class="nc" id="L56">		SpecialContainer parent = (SpecialContainer)root.parent;</span>
+<span class="nc" id="L57">		return parent.amount;</span>
+	}
+
+	public void addWater(double amount) {
+<span class="nc" id="L61">		Container root = findRootAndCompress();</span>
+<span class="nc" id="L62">		SpecialContainer parent = (SpecialContainer)root.parent;</span>
+<span class="nc" id="L63">		parent.amount += amount / parent.size;</span>
+<span class="nc" id="L64">	}</span>
+  
+  public void connectTo(Container other) {
+<span class="nc" id="L67">		Container root1 = this.findRootAndCompress();</span>
+<span class="nc" id="L68">		Container root2 = other.findRootAndCompress();</span>
+    
+<span class="nc bnc" id="L70" title="All 2 branches missed.">		if(root1 == root2) return;</span>
+<span class="nc" id="L71">		SpecialContainer parent1 = (SpecialContainer)root1.parent;</span>
+<span class="nc" id="L72">		SpecialContainer parent2 = (SpecialContainer)root2.parent;</span>
+<span class="nc" id="L73">		int size1 = parent1.size;</span>
+<span class="nc" id="L74">		int size2 = parent2.size;</span>
+
+    
+<span class="nc" id="L77">		double newAmount = (parent1.amount * size1 + parent2.amount * size2) / (size1 + size2);</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">		if(parent2.size &gt;= parent1.size) {</span>
+<span class="nc" id="L79">        root1.parent = root2;</span>
+<span class="nc" id="L80">				parent2.amount = newAmount;</span>
+<span class="nc" id="L81">				parent2.size += size1;</span>
+<span class="nc" id="L82">		} else {</span>
+<span class="nc" id="L83">        root2.parent = root1;</span>
+<span class="nc" id="L84">				parent1.amount = newAmount;</span>
+<span class="nc" id="L85">				parent1.size += size2;</span>
+		}
+<span class="nc" id="L87">	}</span>
+  
+  public int groupSize() {
+<span class="nc" id="L90">	  Container root = findRootAndCompress();</span>
+<span class="nc" id="L91">		SpecialContainer parent = (SpecialContainer) root.parent;</span>
+<span class="nc" id="L92">		return parent.size;</span>
+	}
+  // O(logN)
+	public void flush() {
+<span class="nc" id="L96">	    Container root = findRootAndCompress();</span>
+<span class="nc" id="L97">			SpecialContainer parent = (SpecialContainer) root.parent;</span>
+<span class="nc" id="L98">		  parent.amount = 0d;</span>
+<span class="nc" id="L99">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Container.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">uz.learn.chapter3.speed3</a> &gt; <span class="el_source">Container.java</span></div><h1>Container.java</h1><pre class="source lang-java linenums">package uz.learn.chapter3.speed3;
+
+import java.util.*;
+
+/** A water container, with all methods in amortized almost-constant time.
+ *
+ * Based on union-find trees with link-by-size and path compression.
+ *
+ */
+
+<span class="nc" id="L11">public class Container {</span>
+  
+  private double amount;
+<span class="nc" id="L14">	private Container parent = this;</span>
+<span class="nc" id="L15">	private int size = 1;</span>
+
+		private Container findRootAndCompress() {
+<span class="nc bnc" id="L18" title="All 2 branches missed.">		  if(parent != this)</span>
+<span class="nc" id="L19">				parent = parent.findRootAndCompress();</span>
+<span class="nc" id="L20">      return parent;</span>
+		}
+
+	public double getAmount() {
+<span class="nc" id="L24">	  Container root = findRootAndCompress();</span>
+<span class="nc" id="L25">		return root.amount;</span>
+	}
+
+	public void addWater(double amount) {
+<span class="nc" id="L29">		Container root = findRootAndCompress();</span>
+<span class="nc" id="L30">		root.amount += amount / root.size;</span>
+<span class="nc" id="L31">	}</span>
+  
+  public void connectTo(Container other) {
+<span class="nc" id="L34">		Container root1 = this.findRootAndCompress();</span>
+<span class="nc" id="L35">		Container root2 = other.findRootAndCompress();</span>
+    
+<span class="nc bnc" id="L37" title="All 2 branches missed.">		if(root1 == root2) return;</span>
+<span class="nc" id="L38">		int size1 = root1.size;</span>
+<span class="nc" id="L39">		int size2 = root2.size;</span>
+    
+<span class="nc" id="L41">		double newAmount = (root1.amount * size1 + root2.amount * size2) / (size1 + size2);</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">		if(root2.size &gt;= root1.size) {</span>
+<span class="nc" id="L43">        root1.parent = root2;</span>
+<span class="nc" id="L44">				root2.amount = newAmount;</span>
+<span class="nc" id="L45">				root2.size += size1;</span>
+<span class="nc" id="L46">		} else {</span>
+<span class="nc" id="L47">        root2.parent = root1;</span>
+<span class="nc" id="L48">				root1.amount = newAmount;</span>
+<span class="nc" id="L49">				root1.size += size2;</span>
+		}
+<span class="nc" id="L51">	}</span>
+
+  public int groupSize() {
+<span class="nc" id="L54">	  Container root = findRootAndCompress();</span>
+<span class="nc" id="L55">		return root.size;</span>
+	}
+  // O(logN)
+	public void flush() {
+<span class="nc" id="L59">	  Container root = findRootAndCompress();</span>
+<span class="nc" id="L60">		root.amount = 0d;</span>
+<span class="nc" id="L61">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

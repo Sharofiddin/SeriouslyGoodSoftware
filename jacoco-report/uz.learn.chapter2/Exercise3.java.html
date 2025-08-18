@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Exercise3.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">uz.learn.chapter2</a> &gt; <span class="el_source">Exercise3.java</span></div><h1>Exercise3.java</h1><pre class="source lang-java linenums">package uz.learn.chapter2;
+
+import java.util.Set;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+
+class User {
+  private String name;
+<span class="nc" id="L11">	User(String name) {</span>
+<span class="nc" id="L12">		this.name = name;</span>
+<span class="nc" id="L13">	}</span>
+<span class="nc" id="L14">  private Set&lt;User&gt; friends = new HashSet&lt;&gt;();  </span>
+
+	public void befriend(User other) {
+<span class="nc" id="L17">	  this.friends.add(other);</span>
+<span class="nc" id="L18">		other.friends.add(this);</span>
+<span class="nc" id="L19">	}</span>
+  public boolean isDirectFriendOf(User other){
+<span class="nc" id="L21">	  return this.friends.contains(other);</span>
+	}
+  public boolean isInDirectFriendOf(User other){
+<span class="nc" id="L24">		Deque&lt;User&gt; checkingUsers = new LinkedList&lt;&gt;();</span>
+<span class="nc" id="L25">		Set&lt;User&gt; visited = new HashSet&lt;&gt;();</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">		for(User user: this.friends) {</span>
+<span class="nc" id="L27">			checkingUsers.addAll(user.friends);</span>
+		}
+<span class="nc bnc" id="L29" title="All 2 branches missed.">		while(checkingUsers.size() &gt; 0 ){</span>
+<span class="nc" id="L30">      User user = checkingUsers.removeFirst();</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">      if(!visited.contains(user)){</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">			  if (user.friends.contains(other))</span>
+<span class="nc" id="L33">				 	return true;</span>
+<span class="nc" id="L34">			  checkingUsers.addAll(user.friends);</span>
+<span class="nc" id="L35">				visited.add(user);</span>
+			}
+		}
+<span class="nc" id="L38">	  return false;</span>
+	}
+
+	public String toString() {
+<span class="nc" id="L42">		return name;</span>
+	}
+}
+
+<span class="nc" id="L46">public class Exercise3 {</span>
+  public static void main(String ... args) {
+<span class="nc" id="L48">	  User user1 = new User(&quot;user1&quot;);</span>
+<span class="nc" id="L49">		User user2 = new User(&quot;user2&quot;);</span>
+<span class="nc" id="L50">		User user3 = new User(&quot;user3&quot;);</span>
+<span class="nc" id="L51">		User user4 = new User(&quot;user4&quot;);</span>
+<span class="nc" id="L52">		User user5 = new User(&quot;user5&quot;);</span>
+<span class="nc" id="L53">		user1.befriend(user2);</span>
+<span class="nc" id="L54">		user2.befriend(user3);</span>
+<span class="nc" id="L55">		user3.befriend(user4);</span>
+<span class="nc" id="L56">		System.out.println(user1 +&quot; is direct friend of &quot; + user2 + &quot; = &quot; + user1.isDirectFriendOf(user2));</span>
+<span class="nc" id="L57">		System.out.println(user1 +&quot; is direct friend of &quot; + user3 + &quot; = &quot; + user1.isDirectFriendOf(user3));</span>
+<span class="nc" id="L58">		System.out.println(user1 +&quot; is in direct friend of &quot; + user3 + &quot; = &quot; + user1.isInDirectFriendOf(user3));</span>
+<span class="nc" id="L59">		System.out.println(user1 +&quot; is in direct friend of &quot; + user4 + &quot; = &quot; + user1.isInDirectFriendOf(user4));</span>
+<span class="nc" id="L60">		System.out.println(user1 +&quot; is in direct friend of &quot; + user5 + &quot; = &quot; + user1.isInDirectFriendOf(user5));</span>
+<span class="nc" id="L61">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BoundedSet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">uz.learn.chapter5</a> &gt; <span class="el_source">BoundedSet.java</span></div><h1>BoundedSet.java</h1><pre class="source lang-java linenums">package uz.learn.chapter5;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+
+<span class="nc" id="L8">public class BoundedSet&lt;T&gt; {</span>
+	private final LinkedList&lt;T&gt; data;
+	private final int capacity;
+  
+<span class="nc" id="L12">	public BoundedSet(int capacity){</span>
+<span class="nc" id="L13">   this.data = new LinkedList&lt;&gt;();</span>
+<span class="nc" id="L14">	 this.capacity = capacity;</span>
+<span class="nc" id="L15">	}</span>
+<span class="nc" id="L16">  public BoundedSet(BoundedSet&lt;T&gt; other){</span>
+<span class="nc" id="L17">    this.data = new LinkedList&lt;&gt;(other.data);</span>
+<span class="nc" id="L18">	  this.capacity = other.capacity;</span>
+<span class="nc" id="L19">	}</span>
+  public void add(T element){
+<span class="nc bnc" id="L21" title="All 2 branches missed.">		if(element == null){</span>
+<span class="nc" id="L22">  		throw new NullPointerException();</span>
+		}
+<span class="nc" id="L24">    BoundedSet&lt;T&gt; copy = null;</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">		assert (copy = new BoundedSet&lt;&gt;(this)) != null;</span>
+<span class="nc" id="L26">		data.remove(element);</span>
+
+<span class="nc bnc" id="L28" title="All 2 branches missed.">		if(data.size() == capacity){</span>
+<span class="nc" id="L29">     data.removeFirst();</span>
+		}
+
+<span class="nc" id="L32">		data.addLast(element);</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">		assert postAdd(copy, element) : &quot;add failed post condition&quot;;</span>
+<span class="nc" id="L34">	}</span>
+
+
+	private boolean postAdd(BoundedSet&lt;T&gt; oldSet, T element) {
+<span class="nc bnc" id="L38" title="All 2 branches missed.">		if (!data.getLast().equals(element)) {</span>
+<span class="nc" id="L39">			return false;</span>
+		}
+
+<span class="nc" id="L42">		List&lt;T&gt; copyOfCurrent = new ArrayList&lt;&gt;(data);</span>
+<span class="nc" id="L43">		copyOfCurrent.remove(element);</span>
+<span class="nc" id="L44">		oldSet.data.remove(element);</span>
+
+<span class="nc bnc" id="L46" title="All 2 branches missed.">		if(oldSet.data.size() == capacity){</span>
+<span class="nc" id="L47">		  oldSet.data.removeFirst();</span>
+		}
+    
+<span class="nc" id="L50">		return oldSet.data.equals(copyOfCurrent);</span>
+	}
+
+
+	public boolean contains(T element){
+<span class="nc" id="L55">	  return data.contains(element);</span>
+	}
+  public static void main(String[] args) {
+<span class="nc" id="L58">  		BoundedSet&lt;Integer&gt; ints = new BoundedSet&lt;&gt;(3);</span>
+<span class="nc" id="L59">			ints.add(1);</span>
+<span class="nc" id="L60">			ints.add(2);</span>
+<span class="nc" id="L61">			ints.add(3);</span>
+<span class="nc" id="L62">			ints.add(4);</span>
+<span class="nc" id="L63">			System.out.println(&quot;contains(1): &quot; + ints.contains(1) );</span>
+<span class="nc" id="L64">			System.out.println(&quot;contains(2): &quot; + ints.contains(2) );</span>
+<span class="nc" id="L65">			System.out.println(&quot;contains(3): &quot; + ints.contains(3) );</span>
+<span class="nc" id="L66">			System.out.println(&quot;contains(4): &quot; + ints.contains(4) );</span>
+      // Collection
+<span class="nc" id="L68">			ints.add(2);</span>
+<span class="nc" id="L69">			ints.add(6);</span>
+<span class="nc" id="L70">			System.out.println(&quot;contains(2): &quot; + ints.contains(2) );</span>
+<span class="nc" id="L71">			System.out.println(&quot;contains(6): &quot; + ints.contains(6) );</span>
+<span class="nc" id="L72">			System.out.println(&quot;contains(3): &quot; + ints.contains(3) );</span>
+
+<span class="nc" id="L74">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

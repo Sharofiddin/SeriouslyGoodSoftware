@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Container.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">uz.learn.chapter4.memory1</a> &gt; <span class="el_source">Container.java</span></div><h1>Container.java</h1><pre class="source lang-java linenums">package uz.learn.chapter4.memory1;
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="nc" id="L5">public class Container {</span>
+	private List&lt;Container&gt; group;
+	private float amount;
+<span class="nc" id="L8">	public float getAmount() { return amount; }</span>
+
+	public void connectTo(Container other) {
+<span class="nc bnc" id="L11" title="All 2 branches missed.">	  if(this.group == null) {</span>
+<span class="nc" id="L12">			this.group = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L13">			this.group.add(this);</span>
+		}
+
+<span class="nc bnc" id="L16" title="All 2 branches missed.">		if(other.group == null) {</span>
+<span class="nc" id="L17">				other.group = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L18">				other.group.add(other);</span>
+		}
+
+<span class="nc bnc" id="L21" title="All 2 branches missed.">		if(this.group == other.group) return;</span>
+
+<span class="nc" id="L23">		int size1 = this.group.size();</span>
+<span class="nc" id="L24">		int size2 = other.group.size();</span>
+<span class="nc" id="L25">		float tot1 = this.amount;</span>
+<span class="nc" id="L26">		float tot2 = other.amount;</span>
+<span class="nc" id="L27">		float newAmount = (tot1 + tot2) / (size1 + size2);</span>
+<span class="nc" id="L28">    group.addAll(other.group);</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">		for(Container c : other.group) {</span>
+<span class="nc" id="L30">		  c.group = group;</span>
+		}
+<span class="nc bnc" id="L32" title="All 2 branches missed.">		for(Container c : group){</span>
+<span class="nc" id="L33">		 c.amount = newAmount;</span>
+		}
+<span class="nc" id="L35">	}</span>
+
+	public void addWater(float amount) {
+<span class="nc bnc" id="L38" title="All 2 branches missed.">	  if(group == null){</span>
+<span class="nc" id="L39">			this.amount = amount;</span>
+<span class="nc" id="L40">		} else {</span>
+<span class="nc" id="L41">		  float amountPerContainer = amount / group.size();</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">		  for(Container c : group) {</span>
+<span class="nc" id="L43">		  	c.amount += amountPerContainer;</span>
+		 }
+		}
+<span class="nc" id="L46">	}</span>
+
+	public static void main(String [] args) {
+<span class="nc" id="L49">	  Container a = new Container();</span>
+<span class="nc" id="L50">		Container b = new Container();</span>
+<span class="nc" id="L51">		a.addWater(12);</span>
+<span class="nc" id="L52">		b.addWater(8);</span>
+<span class="nc" id="L53">		a.connectTo(b);</span>
+<span class="nc" id="L54">		b.connectTo(a);</span>
+<span class="nc" id="L55">		System.out.println(&quot;a=&quot; + a.getAmount() + &quot;, b= &quot; + b.getAmount());</span>
+<span class="nc" id="L56">	}</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
