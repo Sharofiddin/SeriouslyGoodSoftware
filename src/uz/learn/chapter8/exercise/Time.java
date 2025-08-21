@@ -16,9 +16,6 @@ public class Time {
 		return hour <= 23 && hour >= 0 && minute <= 59 && minute >= 0 && second <= 59 && second >= 0;
 	} 
 
-	private boolean isValid(Time time){
-     return isValid(time.hour, time.minute, time.second);
-	}
 	private String format(int timeUnit){
     if(timeUnit < 10)
 			return "0" + timeUnit;
